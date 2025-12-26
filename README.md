@@ -78,11 +78,6 @@ AcadBox unifies **performance tracking, attendance monitoring, scheduling, and f
 
 ---
 
-## 📸 Screenshots
-> *(Add screenshots of Dashboard, Attendance Risk Monitor, Grades, and Focus Mode here)*
-
----
-
 ## 🔮 Future Scope
 - Backend integration (Firebase / Supabase)
 - User authentication
