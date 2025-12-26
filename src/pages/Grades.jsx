@@ -5,7 +5,7 @@ import './Grades.css';
 
 const Grades = () => {
     const {
-        courses, grades, addGrade, deleteGrade, getCourseGrades,
+        courses, grades, addGrade, deleteGrade, updateGrade, getCourseGrades,
         semesters, currentSemester, setCurrentSemester, getSemesterCourses,
         addSemester, updateSemester, deleteSemester,
         getWeakSubjectInsight, getConfidenceIndicator
@@ -18,7 +18,7 @@ const Grades = () => {
     const [showSemesterManager, setShowSemesterManager] = useState(false);
     const [newSemesterName, setNewSemesterName] = useState('');
     const [editingSemester, setEditingSemester] = useState(null);
-    const [editSemesterName, setEditSemesterName] = useState('');
+    const [tempSemesterName, setTempSemesterName] = useState('');
     const [newGrade, setNewGrade] = useState({
         title: '',
         type: 'Quiz',
@@ -28,34 +28,31 @@ const Grades = () => {
         date: new Date().toISOString().split('T')[0]
     });
 
+    // Sync selected course when semester changes
+    React.useEffect(() => {
+        const coursesInSem = getSemesterCourses(currentSemester);
+        if (coursesInSem.length > 0 && (!selectedCourseForAdd || !coursesInSem.find(c => c.id === selectedCourseForAdd))) {
+            setSelectedCourseForAdd(coursesInSem[0].id);
+        }
+    }, [currentSemester, getSemesterCourses]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!newGrade.title || !selectedCourseForAdd) return;
 
+        const gradeData = {
+            ...newGrade,
+            courseId: selectedCourseForAdd,
+            scored: parseFloat(newGrade.scored),
+            total: parseFloat(newGrade.total),
+            weightage: parseFloat(newGrade.weightage)
+        };
+
         if (editingGrade) {
-            // Update existing grade
-            const updatedGrades = grades.map(g =>
-                g.id === editingGrade.id
-                    ? { ...g, ...newGrade, scored: parseFloat(newGrade.scored), total: parseFloat(newGrade.total) }
-                    : g
-            );
-            // We need to update through context - for now, delete and re-add
-            deleteGrade(editingGrade.id);
-            addGrade({
-                ...newGrade,
-                courseId: selectedCourseForAdd,
-                scored: parseFloat(newGrade.scored),
-                total: parseFloat(newGrade.total),
-                weightage: parseFloat(newGrade.weightage)
-            });
+            updateGrade(editingGrade.id, gradeData);
             setEditingGrade(null);
         } else {
-            addGrade({
-                ...newGrade,
-                courseId: selectedCourseForAdd,
-                scored: parseFloat(newGrade.scored),
-                total: parseFloat(newGrade.total)
-            });
+            addGrade(gradeData);
         }
 
         setNewGrade({ title: '', type: 'Quiz', scored: 0, total: 100, weightage: 10, date: new Date().toISOString().split('T')[0] });
@@ -170,9 +167,12 @@ const Grades = () => {
         }
     };
 
-    const handleEditSemester = (oldName, newName) => {
-        updateSemester(oldName, newName);
-        setEditingSemester(null);
+    const handleUpdateSemester = (oldName) => {
+        if (tempSemesterName.trim() && tempSemesterName !== oldName) {
+            updateSemester(oldName, tempSemesterName.trim());
+            setEditingSemester(null);
+            setTempSemesterName('');
+        }
     };
 
     const handleDeleteSemester = (semesterName) => {
@@ -237,85 +237,7 @@ const Grades = () => {
                 </div>
             )}
 
-            {showSemesterModal && (
-                <div className="modal-overlay" onClick={() => setShowSemesterModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h3>Add New Semester</h3>
-                        <input
-                            type="text"
-                            className="input-field"
-                            placeholder="e.g., Semester 3 2025"
-                            value={newSemesterName}
-                            onChange={(e) => setNewSemesterName(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleAddSemester()}
-                            autoFocus
-                        />
-                        <div className="modal-actions">
-                            <button className="btn" onClick={() => setShowSemesterModal(false)}>Cancel</button>
-                            <button className="btn btn-primary" onClick={handleAddSemester}>Add</button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
-            {showSemesterManager && (
-                <div className="modal-overlay" onClick={() => setShowSemesterManager(false)}>
-                    <div className="modal-content semester-manager" onClick={(e) => e.stopPropagation()}>
-                        <h3>Manage Semesters</h3>
-                        <div className="semester-list">
-                            {semesters.map(sem => (
-                                <div key={sem} className="semester-item">
-                                    {editingSemester === sem ? (
-                                        <>
-                                            <input
-                                                type="text"
-                                                className="input-field"
-                                                value={editSemesterName}
-                                                onChange={(e) => setEditSemesterName(e.target.value)}
-                                                onKeyPress={(e) => e.key === 'Enter' && handleEditSemester(sem, editSemesterName)}
-                                                autoFocus
-                                            />
-                                            <button className="btn btn-sm" onClick={() => handleEditSemester(sem, editSemesterName)}>
-                                                Save
-                                            </button>
-                                            <button className="btn btn-sm" onClick={() => setEditingSemester(null)}>
-                                                Cancel
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span className="semester-name">{sem}</span>
-                                            <div className="semester-actions">
-                                                <button
-                                                    className="btn-icon"
-                                                    onClick={() => {
-                                                        setEditingSemester(sem);
-                                                        setEditSemesterName(sem);
-                                                    }}
-                                                    title="Edit"
-                                                >
-                                                    <FaEdit />
-                                                </button>
-                                                <button
-                                                    className="btn-icon delete-btn-small"
-                                                    onClick={() => handleDeleteSemester(sem)}
-                                                    title="Delete"
-                                                    disabled={semesters.length === 1}
-                                                >
-                                                    <FaTrash />
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="modal-actions">
-                            <button className="btn btn-primary" onClick={() => setShowSemesterManager(false)}>Close</button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {isAdding && (
                 <div className="v5-form-card">

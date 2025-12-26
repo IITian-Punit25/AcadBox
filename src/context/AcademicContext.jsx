@@ -100,6 +100,10 @@ export const AcademicProvider = ({ children }) => {
         setGrades(grades.filter(g => g.id !== gradeId));
     };
 
+    const updateGrade = (gradeId, updatedData) => {
+        setGrades(prev => prev.map(g => g.id === gradeId ? { ...g, ...updatedData } : g));
+    };
+
     const getCourseGrades = (courseId) => {
         return grades.filter(g => g.courseId === courseId);
     };
@@ -275,7 +279,7 @@ export const AcademicProvider = ({ children }) => {
         <AcademicContext.Provider value={{
             courses, tasks, schedule, settings, grades, semesters, currentSemester, focusSessions,
             addTask, completeTask, addCourse, deleteCourse, updateSettings,
-            addGrade, deleteGrade, getCourseGrades, addSemester, getSemesterCourses, setCurrentSemester,
+            addGrade, deleteGrade, updateGrade, getCourseGrades, addSemester, getSemesterCourses, setCurrentSemester,
             setCourses, setSemesters, updateSemester, deleteSemester, addFocusSession,
             getPriorityExplanation, getAcademicHealthBreakdown, getWeakSubjectInsight,
             getEffortAccuracyInsight, getWeeklyReflection, getConfidenceIndicator
