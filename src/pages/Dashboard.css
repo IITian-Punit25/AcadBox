@@ -1,0 +1,240 @@
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.date-display {
+    color: var(--text-secondary);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.health-card {
+    text-align: center;
+}
+
+.chart-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+}
+
+.health-score {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.health-status {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-blue);
+}
+
+.task-info h4 {
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.task-course {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.task-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.btn-check {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-check:hover {
+    color: var(--accent-green);
+}
+
+.card-header-with-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.health-breakdown-tooltip,
+.ai-explanation-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.info-icon {
+    color: var(--text-secondary);
+    cursor: help;
+    font-size: 1.1rem;
+}
+
+.info-icon-small {
+    color: var(--text-secondary);
+    cursor: help;
+    font-size: 0.9rem;
+}
+
+.tooltip-content,
+.tooltip-content-wide {
+    visibility: hidden;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 200px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+}
+
+.tooltip-content-wide {
+    width: 250px;
+}
+
+.health-breakdown-tooltip:hover .tooltip-content,
+.ai-explanation-tooltip:hover .tooltip-content-wide {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.tooltip-item:last-child {
+    margin-bottom: 0;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reflection-card {
+    grid-column: 1 / -1;
+}
+
+.reflection-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.header-icon {
+    color: var(--accent-blue);
+}
+
+.reflection-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 30px;
+}
+
+.reflection-stats {
+    display: flex;
+    gap: 40px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--accent-blue);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.reflection-insight {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background-color: var(--bg-tertiary);
+    border-radius: 12px;
+    border-left: 4px solid var(--accent-purple);
+}
+
+.insight-icon {
+    color: var(--accent-purple);
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reflection-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+}

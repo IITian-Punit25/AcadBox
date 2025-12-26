@@ -1,0 +1,133 @@
+.schedule-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.day-column {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.day-title {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.day-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    border-left: 4px solid #555;
+}
+
+.timeline-time {
+    font-weight: bold;
+    color: var(--accent-blue);
+    min-width: 40px;
+}
+
+.timeline-content h4 {
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.timeline-tag {
+    font-size: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.empty-slot {
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.timeline-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.status-badge.rescheduled {
+    color: #f59e0b;
+}
+
+.status-badge.overdue {
+    color: var(--accent-red);
+}
+
+/* Tooltip styles (shared with Dashboard but scoped here if needed) */
+.ai-explanation-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.info-icon-small {
+    color: var(--text-secondary);
+    cursor: help;
+    font-size: 0.9rem;
+}
+
+.tooltip-content-wide {
+    visibility: hidden;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    right: 0;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 250px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+}
+
+.ai-explanation-tooltip:hover .tooltip-content-wide {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .schedule-container {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,23 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  padding: 40px;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+    padding-top: 80px;
+    /* Space for mobile header if needed */
+  }
+}
