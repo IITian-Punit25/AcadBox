@@ -1,0 +1,235 @@
+.attendance-page-v5 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 0;
+}
+
+.v5-attendance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.v5-attendance-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.v5-attendance-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--course-color, var(--accent-blue));
+}
+
+.v5-attendance-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-blue);
+}
+
+.v5-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.v5-course-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.v5-status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.v5-percentage-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.v5-stats-row {
+    display: flex;
+    gap: 24px;
+}
+
+.v5-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.v5-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.v5-stat-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.v5-progress-bar-bg {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.v5-progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.v5-insights-section {
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.v5-insight-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+.v5-insight-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.v5-insight-list li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    position: relative;
+    padding-left: 16px;
+}
+
+.v5-insight-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+}
+
+.v5-update-btn {
+    margin-top: auto;
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.v5-update-btn:hover {
+    background: var(--border-color);
+    border-color: var(--accent-blue);
+}
+
+/* Modal Styles */
+.v5-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.v5-counter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.v5-counter-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.v5-counter {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.v5-counter button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.v5-counter button:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.v5-counter input {
+    width: 60px;
+    text-align: center;
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 4px;
+}
+
+.v5-counter input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+@media (max-width: 768px) {
+    .v5-attendance-grid {
+        grid-template-columns: 1fr;
+    }
+}

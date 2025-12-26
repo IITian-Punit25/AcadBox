@@ -4,7 +4,7 @@ import { FaPlay, FaPause, FaStop, FaCheck } from 'react-icons/fa';
 import './FocusMode.css';
 
 const FocusMode = () => {
-    const { tasks, completeTask, addFocusSession } = useAcademic();
+    const { tasks, completeTask, addFocusSession, getAttendanceStatus } = useAcademic();
     const [selectedTask, setSelectedTask] = useState(null);
     const [isActive, setIsActive] = useState(false);
     const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes
@@ -135,6 +135,11 @@ const FocusMode = () => {
                     <div className="active-task-display">
                         <p>Focusing on:</p>
                         <h3>{selectedTask.title}</h3>
+                        {getAttendanceStatus(selectedTask.courseId).label !== 'Safe' && (
+                            <div className="attendance-warning-focus">
+                                <FaExclamationCircle /> <span>Low attendance in this course. Prioritize attending classes!</span>
+                            </div>
+                        )}
                         <button className="btn btn-primary complete-btn" onClick={handleComplete}>
                             <FaCheck /> Mark Complete
                         </button>

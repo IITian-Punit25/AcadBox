@@ -7,6 +7,7 @@ import Courses from './pages/Courses';
 import SmartSchedule from './pages/SmartSchedule';
 import FocusMode from './pages/FocusMode';
 import Grades from './pages/Grades';
+import Attendance from './pages/Attendance';
 import Settings from './pages/Settings';
 import { FaBars } from 'react-icons/fa';
 import './App.css';
@@ -39,6 +40,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/schedule" element={<SmartSchedule />} />
+              <Route path="/attendance" element={<Attendance />} />
               <Route path="/grades" element={<Grades />} />
               <Route path="/focus" element={<FocusMode />} />
               <Route path="/settings" element={<Settings />} />

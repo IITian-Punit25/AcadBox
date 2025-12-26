@@ -4,7 +4,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 import './SmartSchedule.css';
 
 const SmartSchedule = () => {
-    const { schedule, courses, getPriorityExplanation } = useAcademic();
+    const { schedule, courses, getPriorityExplanation, getAttendanceStatus } = useAcademic();
 
     const getCourseColor = (id) => courses.find(c => c.id === id)?.color || '#555';
 
@@ -41,6 +41,9 @@ const SmartSchedule = () => {
                                         </div>
                                         <div className="timeline-meta">
                                             <span className="timeline-tag">{task.type}</span>
+                                            {getAttendanceStatus(task.courseId).label === 'Critical' && (
+                                                <span className="status-badge critical-attendance">🔴 Low Attendance</span>
+                                            )}
                                             {task.rescheduled && <span className="status-badge rescheduled">🟡 Rescheduled</span>}
                                             {isOverdue(task.deadline) && task.status === 'pending' && !task.rescheduled && (
                                                 <span className="status-badge overdue">🔴 Overdue</span>

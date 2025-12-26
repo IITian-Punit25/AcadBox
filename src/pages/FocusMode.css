@@ -103,6 +103,19 @@
     margin-bottom: 20px;
 }
 
+.attendance-warning-focus {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--accent-red);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
 .complete-btn {
     display: flex;
     align-items: center;

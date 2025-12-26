@@ -90,6 +90,12 @@
     color: var(--accent-red);
 }
 
+.status-badge.critical-attendance {
+    color: var(--accent-red);
+    font-weight: 700;
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
 /* Tooltip styles (shared with Dashboard but scoped here if needed) */
 .ai-explanation-tooltip {
     position: relative;

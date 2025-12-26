@@ -35,6 +35,12 @@ export const AcademicProvider = ({ children }) => {
         { id: 3, courseId: 2, type: 'Mid-Sem', title: 'Mid-Sem Exam', scored: 38, total: 50, date: '2025-12-15', weightage: 30 },
     ]);
 
+    const [attendance, setAttendance] = useState([
+        { courseId: 1, attended: 18, total: 20 },
+        { courseId: 2, attended: 14, total: 20 },
+        { courseId: 3, attended: 19, total: 20 },
+    ]);
+
     // "AI" Prioritization Logic
     const calculatePriority = (task) => {
         const today = new Date();
@@ -138,6 +144,50 @@ export const AcademicProvider = ({ children }) => {
         }
     };
 
+    const updateAttendance = (courseId, attended, total) => {
+        setAttendance(prev => {
+            const existing = prev.find(a => a.courseId === courseId);
+            if (existing) {
+                return prev.map(a => a.courseId === courseId ? { ...a, attended, total } : a);
+            }
+            return [...prev, { courseId, attended, total }];
+        });
+    };
+
+    const getAttendanceStatus = (courseId) => {
+        const record = attendance.find(a => a.courseId === courseId);
+        if (!record || record.total === 0) return { percentage: 100, color: 'var(--accent-green)', label: 'Safe' };
+
+        const percentage = (record.attended / record.total) * 100;
+        if (percentage >= 80) return { percentage, color: 'var(--accent-green)', label: 'Safe' };
+        if (percentage >= 75) return { percentage, color: '#f59e0b', label: 'At Risk' };
+        return { percentage, color: 'var(--accent-red)', label: 'Critical' };
+    };
+
+    const getAttendanceInsights = (courseId) => {
+        const record = attendance.find(a => a.courseId === courseId);
+        if (!record || record.total === 0) return null;
+
+        const currentPercentage = (record.attended / record.total) * 100;
+        const insights = [];
+
+        // Prediction: Missing next 2 classes
+        const futurePercentage = (record.attended / (record.total + 2)) * 100;
+        insights.push(`If you miss the next 2 classes, your attendance will drop to ${Math.round(futurePercentage)}%.`);
+
+        // Prediction: How many more can miss
+        const maxMisses = Math.floor((record.attended / 0.75) - record.total);
+        if (maxMisses > 0) {
+            insights.push(`You can miss ${maxMisses} more class${maxMisses > 1 ? 'es' : ''} to stay above 75%.`);
+        } else if (currentPercentage < 75) {
+            // How many to attend to get back to 75%
+            const needed = Math.ceil((0.75 * record.total - record.attended) / 0.25);
+            insights.push(`Attend the next ${needed} classes to return to the safe zone (75%+).`);
+        }
+
+        return insights;
+    };
+
     const [focusSessions, setFocusSessions] = useState([]);
 
     const addFocusSession = (session) => {
@@ -174,10 +224,16 @@ export const AcademicProvider = ({ children }) => {
         const totalScored = grades.reduce((sum, g) => sum + g.scored, 0);
         const gradePerformance = totalPossible > 0 ? (totalScored / totalPossible) * 100 : 0;
 
+        // Attendance performance
+        const avgAttendance = attendance.length > 0
+            ? attendance.reduce((sum, a) => sum + (a.attended / a.total), 0) / attendance.length * 100
+            : 100;
+
         return {
             taskCompletion: Math.round(taskCompletion),
             focusConsistency: Math.round(focusConsistency),
-            gradePerformance: Math.round(gradePerformance)
+            gradePerformance: Math.round(gradePerformance),
+            attendancePerformance: Math.round(avgAttendance)
         };
     };
 
@@ -277,12 +333,13 @@ export const AcademicProvider = ({ children }) => {
 
     return (
         <AcademicContext.Provider value={{
-            courses, tasks, schedule, settings, grades, semesters, currentSemester, focusSessions,
+            courses, tasks, schedule, settings, grades, semesters, currentSemester, focusSessions, attendance,
             addTask, completeTask, addCourse, deleteCourse, updateSettings,
             addGrade, deleteGrade, updateGrade, getCourseGrades, addSemester, getSemesterCourses, setCurrentSemester,
             setCourses, setSemesters, updateSemester, deleteSemester, addFocusSession,
             getPriorityExplanation, getAcademicHealthBreakdown, getWeakSubjectInsight,
-            getEffortAccuracyInsight, getWeeklyReflection, getConfidenceIndicator
+            getEffortAccuracyInsight, getWeeklyReflection, getConfidenceIndicator,
+            updateAttendance, getAttendanceStatus, getAttendanceInsights
         }}>
             {children}
         </AcademicContext.Provider>

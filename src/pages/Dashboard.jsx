@@ -22,9 +22,10 @@ const Dashboard = () => {
 
     // Calculate "Academic Health"
     const healthScore = Math.round(
-        (healthBreakdown.taskCompletion * 0.4) +
-        (healthBreakdown.focusConsistency * 0.3) +
-        (healthBreakdown.gradePerformance * 0.3)
+        (healthBreakdown.taskCompletion * 0.3) +
+        (healthBreakdown.focusConsistency * 0.2) +
+        (healthBreakdown.gradePerformance * 0.2) +
+        (healthBreakdown.attendancePerformance * 0.3)
     );
 
     const chartData = {
@@ -66,6 +67,10 @@ const Dashboard = () => {
                                 <div className="tooltip-item">
                                     <span>Grade Performance</span>
                                     <span>{healthBreakdown.gradePerformance}%</span>
+                                </div>
+                                <div className="tooltip-item">
+                                    <span>Attendance</span>
+                                    <span>{healthBreakdown.attendancePerformance}%</span>
                                 </div>
                             </div>
                         </div>

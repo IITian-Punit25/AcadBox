@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaBook, FaCalendarAlt, FaChartBar, FaClock, FaCog, FaTimes } from 'react-icons/fa';
+import { FaHome, FaBook, FaCalendarAlt, FaChartBar, FaChartLine, FaClock, FaCog, FaTimes } from 'react-icons/fa';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -28,6 +28,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </Link>
                 <Link to="/schedule" className={`nav-item ${isActive('/schedule')}`} onClick={onClose}>
                     <FaCalendarAlt /> <span>Smart Schedule</span>
+                </Link>
+                <Link to="/attendance" className={`nav-item ${isActive('/attendance')}`} onClick={onClose}>
+                    <FaChartLine /> <span>Attendance</span>
                 </Link>
                 <Link to="/grades" className={`nav-item ${isActive('/grades')}`} onClick={onClose}>
                     <FaChartBar /> <span>Grades</span>
