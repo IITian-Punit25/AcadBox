@@ -1,9 +1,36 @@
 import React from 'react';
 import { useAcademic } from '../context/AcademicContext';
+import { FaDownload, FaTrashAlt } from 'react-icons/fa';
 import './Settings.css';
 
 const Settings = () => {
-    const { settings, updateSettings } = useAcademic();
+    const { settings, updateSettings, deleteAllSemesters, courses, tasks, grades, attendance, semesters, focusSessions } = useAcademic();
+
+    const handleExport = () => {
+        const data = {
+            courses,
+            tasks,
+            grades,
+            attendance,
+            semesters,
+            focusSessions,
+            settings
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `acadbox_data_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const handleReset = () => {
+        if (window.confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+            deleteAllSemesters();
+            alert('All data has been reset.');
+        }
+    };
 
     return (
         <div className="settings-page">
@@ -25,7 +52,8 @@ const Settings = () => {
                                 type="number"
                                 className="input-field"
                                 value={settings.dailyGoal}
-                                onChange={(e) => updateSettings({ dailyGoal: parseInt(e.target.value) })}
+                                onChange={(e) => updateSettings({ dailyGoal: e.target.value === '' ? '' : parseInt(e.target.value) })}
+                                onFocus={e => e.target.select()}
                                 min="1"
                                 max="12"
                             />
@@ -75,14 +103,18 @@ const Settings = () => {
                             <label>Export Data</label>
                             <p>Download your academic data as JSON</p>
                         </div>
-                        <button className="btn btn-primary">Export</button>
+                        <button className="btn btn-primary" onClick={handleExport}>
+                            <FaDownload /> Export
+                        </button>
                     </div>
                     <div className="setting-item">
                         <div className="setting-info">
                             <label className="text-danger">Reset All Data</label>
                             <p>Clear all courses and tasks</p>
                         </div>
-                        <button className="btn btn-danger">Reset</button>
+                        <button className="btn btn-danger" onClick={handleReset}>
+                            <FaTrashAlt /> Reset
+                        </button>
                     </div>
                 </div>
             </div>

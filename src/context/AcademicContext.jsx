@@ -5,41 +5,101 @@ const AcademicContext = createContext();
 export const useAcademic = () => useContext(AcademicContext);
 
 export const AcademicProvider = ({ children }) => {
-    // Initial Mock Data
-    const [courses, setCourses] = useState([
-        { id: 1, name: 'Data Structures', credits: 4, color: '#3b82f6', semester: 'Semester 1 2024' },
-        { id: 2, name: 'Operating Systems', credits: 3, color: '#8b5cf6', semester: 'Semester 1 2024' },
-        { id: 3, name: 'Linear Algebra', credits: 3, color: '#10b981', semester: 'Semester 1 2024' },
-    ]);
+    // Initial Mock Data or Load from LocalStorage
+    const [courses, setCourses] = useState(() => {
+        const saved = localStorage.getItem('acadbox_courses');
+        return saved ? JSON.parse(saved) : [
+            { id: 1, name: 'Data Structures', credits: 4, color: '#3b82f6', semester: 'Semester 1 2024' },
+            { id: 2, name: 'Operating Systems', credits: 3, color: '#8b5cf6', semester: 'Semester 1 2024' },
+            { id: 3, name: 'Linear Algebra', credits: 3, color: '#10b981', semester: 'Semester 1 2024' },
+        ];
+    });
 
-    const [semesters, setSemesters] = useState(['Semester 1 2024', 'Semester 2 2024']);
-    const [currentSemester, setCurrentSemester] = useState('Semester 1 2024');
+    const [semesters, setSemesters] = useState(() => {
+        const saved = localStorage.getItem('acadbox_semesters');
+        return saved ? JSON.parse(saved) : ['Semester 1 2024', 'Semester 2 2024'];
+    });
 
-    const [tasks, setTasks] = useState([
-        { id: 1, title: 'BST Implementation', courseId: 1, type: 'Assignment', deadline: '2025-12-28', effort: 3, status: 'pending' },
-        { id: 2, title: 'Process Scheduling Quiz', courseId: 2, type: 'Exam', deadline: '2025-12-29', effort: 2, status: 'pending' },
-        { id: 3, title: 'Eigenvalues Problem Set', courseId: 3, type: 'Assignment', deadline: '2025-12-30', effort: 4, status: 'pending' },
-    ]);
+    const [currentSemester, setCurrentSemester] = useState(() => {
+        const saved = localStorage.getItem('acadbox_currentSemester');
+        return saved ? JSON.parse(saved) : 'Semester 1 2024';
+    });
+
+    const [tasks, setTasks] = useState(() => {
+        const saved = localStorage.getItem('acadbox_tasks');
+        return saved ? JSON.parse(saved) : [
+            { id: 1, title: 'BST Implementation', courseId: 1, type: 'Assignment', deadline: '2025-12-28', effort: 3, status: 'pending' },
+            { id: 2, title: 'Process Scheduling Quiz', courseId: 2, type: 'Exam', deadline: '2025-12-29', effort: 2, status: 'pending' },
+            { id: 3, title: 'Eigenvalues Problem Set', courseId: 3, type: 'Assignment', deadline: '2025-12-30', effort: 4, status: 'pending' },
+        ];
+    });
 
     const [schedule, setSchedule] = useState([]);
 
-    const [settings, setSettings] = useState({
-        theme: 'light',
-        dailyGoal: 4,
-        notifications: true
+    const [settings, setSettings] = useState(() => {
+        const saved = localStorage.getItem('acadbox_settings');
+        return saved ? JSON.parse(saved) : {
+            theme: 'light',
+            dailyGoal: 4,
+            notifications: true
+        };
     });
 
-    const [grades, setGrades] = useState([
-        { id: 1, courseId: 1, type: 'Quiz', title: 'Quiz 1', scored: 18, total: 20, date: '2025-12-20', weightage: 10 },
-        { id: 2, courseId: 1, type: 'Assignment', title: 'Assignment 1', scored: 45, total: 50, date: '2025-12-22', weightage: 20 },
-        { id: 3, courseId: 2, type: 'Mid-Sem', title: 'Mid-Sem Exam', scored: 38, total: 50, date: '2025-12-15', weightage: 30 },
-    ]);
+    const [grades, setGrades] = useState(() => {
+        const saved = localStorage.getItem('acadbox_grades');
+        return saved ? JSON.parse(saved) : [
+            { id: 1, courseId: 1, type: 'Quiz', title: 'Quiz 1', scored: 18, total: 20, date: '2025-12-20', weightage: 10 },
+            { id: 2, courseId: 1, type: 'Assignment', title: 'Assignment 1', scored: 45, total: 50, date: '2025-12-22', weightage: 20 },
+            { id: 3, courseId: 2, type: 'Mid-Sem', title: 'Mid-Sem Exam', scored: 38, total: 50, date: '2025-12-15', weightage: 30 },
+        ];
+    });
 
-    const [attendance, setAttendance] = useState([
-        { courseId: 1, attended: 18, total: 20 },
-        { courseId: 2, attended: 14, total: 20 },
-        { courseId: 3, attended: 19, total: 20 },
-    ]);
+    const [attendance, setAttendance] = useState(() => {
+        const saved = localStorage.getItem('acadbox_attendance');
+        return saved ? JSON.parse(saved) : [
+            { courseId: 1, attended: 18, total: 20 },
+            { courseId: 2, attended: 14, total: 20 },
+            { courseId: 3, attended: 19, total: 20 },
+        ];
+    });
+
+    const [focusSessions, setFocusSessions] = useState(() => {
+        const saved = localStorage.getItem('acadbox_focusSessions');
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    // Save to LocalStorage
+    useEffect(() => {
+        localStorage.setItem('acadbox_courses', JSON.stringify(courses));
+    }, [courses]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_semesters', JSON.stringify(semesters));
+    }, [semesters]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_currentSemester', JSON.stringify(currentSemester));
+    }, [currentSemester]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_tasks', JSON.stringify(tasks));
+    }, [tasks]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_grades', JSON.stringify(grades));
+    }, [grades]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_attendance', JSON.stringify(attendance));
+    }, [attendance]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_focusSessions', JSON.stringify(focusSessions));
+    }, [focusSessions]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_settings', JSON.stringify(settings));
+    }, [settings]);
 
     // "AI" Prioritization Logic
     const calculatePriority = (task) => {
@@ -92,6 +152,11 @@ export const AcademicProvider = ({ children }) => {
 
     const deleteCourse = (courseId) => {
         setCourses(courses.filter(c => c.id !== courseId));
+        // Cascading delete
+        setTasks(prev => prev.filter(t => t.courseId !== courseId));
+        setGrades(prev => prev.filter(g => g.courseId !== courseId));
+        setAttendance(prev => prev.filter(a => a.courseId !== courseId));
+        setFocusSessions(prev => prev.filter(s => s.courseId !== courseId));
     };
 
     const updateSettings = (newSettings) => {
@@ -136,8 +201,17 @@ export const AcademicProvider = ({ children }) => {
 
     const deleteSemester = (semesterName) => {
         const updatedSemesters = semesters.filter(s => s !== semesterName);
+        const coursesToDelete = courses.filter(c => c.semester === semesterName).map(c => c.id);
+
         setSemesters(updatedSemesters);
         setCourses(prev => prev.filter(c => c.semester !== semesterName));
+
+        // Cascading delete for all courses in this semester
+        setTasks(prev => prev.filter(t => !coursesToDelete.includes(t.courseId)));
+        setGrades(prev => prev.filter(g => !coursesToDelete.includes(g.courseId)));
+        setAttendance(prev => prev.filter(a => !coursesToDelete.includes(a.courseId)));
+        setFocusSessions(prev => prev.filter(s => !coursesToDelete.includes(s.courseId)));
+
         if (currentSemester === semesterName) {
             setCurrentSemester(updatedSemesters.length > 0 ? updatedSemesters[0] : '');
         }
@@ -190,14 +264,18 @@ export const AcademicProvider = ({ children }) => {
             insights.push(`You can miss ${maxMisses} more class${maxMisses > 1 ? 'es' : ''} to stay above 75%.`);
         } else if (currentPercentage < 75) {
             // How many to attend to get back to 75%
-            const needed = Math.ceil((0.75 * record.total - record.attended) / 0.25);
-            insights.push(`Attend the next ${needed} classes to return to the safe zone (75%+).`);
+            // Formula: (attended + x) / (total + x) = 0.75
+            // attended + x = 0.75 * total + 0.75 * x
+            // 0.25 * x = 0.75 * total - attended
+            // x = (0.75 * total - attended) / 0.25
+            const needed = Math.ceil(Math.max(0, (0.75 * record.total - record.attended) / 0.25));
+            if (needed > 0) {
+                insights.push(`Attend the next ${needed} classes to return to the safe zone (75%+).`);
+            }
         }
 
         return insights;
     };
-
-    const [focusSessions, setFocusSessions] = useState([]);
 
     const addFocusSession = (session) => {
         setFocusSessions(prev => [...prev, { ...session, id: Date.now(), timestamp: new Date().toISOString() }]);

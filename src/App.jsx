@@ -10,6 +10,7 @@ import Grades from './pages/Grades';
 import Attendance from './pages/Attendance';
 import Settings from './pages/Settings';
 import { FaBars } from 'react-icons/fa';
+import logo from './assets/logo.png';
 import './App.css';
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
       <div className="app-container">
         <header className="mobile-header">
           <div className="mobile-logo">
-            Acad<span className="text-blue">Box</span>
+            <img src={logo} alt="AcadBox Logo" className="header-logo" />
           </div>
           <button className="mobile-toggle" onClick={toggleMobileMenu}>
             <FaBars />

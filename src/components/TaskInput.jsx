@@ -94,7 +94,8 @@ const TaskInput = () => {
                             min="1"
                             max="10"
                             value={formData.effort}
-                            onChange={e => setFormData({ ...formData, effort: e.target.value })}
+                            onChange={e => setFormData({ ...formData, effort: e.target.value === '' ? '' : e.target.value })}
+                            onFocus={e => e.target.select()}
                         />
                     </div>
                 </div>

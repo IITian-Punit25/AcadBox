@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaHome, FaBook, FaCalendarAlt, FaChartBar, FaChartLine, FaClock, FaCog, FaTimes, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { useAcademic } from '../context/AcademicContext';
+import logo from '../assets/logo.png';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -43,7 +44,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={`sidebar ${isOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
                 <div className="logo-container">
-                    <h2>Acad<span className="text-blue">Box</span></h2>
+                    <img src={logo} alt="AcadBox Logo" className="sidebar-logo" />
                 </div>
                 <button className="sidebar-close" onClick={onClose}>
                     <FaTimes />

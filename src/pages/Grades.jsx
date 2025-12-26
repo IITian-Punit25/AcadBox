@@ -245,7 +245,8 @@ const Grades = () => {
                                     type="number"
                                     className="v5-input"
                                     value={newGrade.scored}
-                                    onChange={e => setNewGrade({ ...newGrade, scored: e.target.value })}
+                                    onChange={e => setNewGrade({ ...newGrade, scored: e.target.value === '' ? '' : e.target.value })}
+                                    onFocus={e => e.target.select()}
                                 />
                             </div>
                             <div className="v5-form-group">
@@ -254,7 +255,8 @@ const Grades = () => {
                                     type="number"
                                     className="v5-input"
                                     value={newGrade.total}
-                                    onChange={e => setNewGrade({ ...newGrade, total: e.target.value })}
+                                    onChange={e => setNewGrade({ ...newGrade, total: e.target.value === '' ? '' : e.target.value })}
+                                    onFocus={e => e.target.select()}
                                 />
                             </div>
                             <div className="v5-form-group">
@@ -263,7 +265,8 @@ const Grades = () => {
                                     type="number"
                                     className="v5-input"
                                     value={newGrade.weightage}
-                                    onChange={e => setNewGrade({ ...newGrade, weightage: e.target.value })}
+                                    onChange={e => setNewGrade({ ...newGrade, weightage: e.target.value === '' ? '' : e.target.value })}
+                                    onFocus={e => e.target.select()}
                                     min="0"
                                     max="100"
                                 />

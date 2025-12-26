@@ -48,7 +48,8 @@ const Courses = () => {
                             placeholder="Credits"
                             className="input-field"
                             value={newCourse.credits}
-                            onChange={e => setNewCourse({ ...newCourse, credits: parseInt(e.target.value) })}
+                            onChange={e => setNewCourse({ ...newCourse, credits: e.target.value === '' ? '' : parseInt(e.target.value) })}
+                            onFocus={e => e.target.select()}
                         />
                         <input
                             type="color"

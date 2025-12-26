@@ -123,7 +123,8 @@ const Attendance = () => {
                                     <input
                                         type="number"
                                         value={tempAttendance.attended}
-                                        onChange={e => setTempAttendance({ ...tempAttendance, attended: parseInt(e.target.value) || 0 })}
+                                        onChange={e => setTempAttendance({ ...tempAttendance, attended: e.target.value === '' ? '' : parseInt(e.target.value) })}
+                                        onFocus={e => e.target.select()}
                                     />
                                     <button onClick={() => setTempAttendance(prev => ({ ...prev, attended: prev.attended + 1 }))}>
                                         <FaPlus />
@@ -139,7 +140,8 @@ const Attendance = () => {
                                     <input
                                         type="number"
                                         value={tempAttendance.total}
-                                        onChange={e => setTempAttendance({ ...tempAttendance, total: parseInt(e.target.value) || 0 })}
+                                        onChange={e => setTempAttendance({ ...tempAttendance, total: e.target.value === '' ? '' : parseInt(e.target.value) })}
+                                        onFocus={e => e.target.select()}
                                     />
                                     <button onClick={() => setTempAttendance(prev => ({ ...prev, total: prev.total + 1 }))}>
                                         <FaPlus />
