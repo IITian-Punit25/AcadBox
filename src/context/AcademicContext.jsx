@@ -213,20 +213,30 @@ export const AcademicProvider = ({ children }) => {
     };
 
     const getAcademicHealthBreakdown = () => {
-        const completedTasks = tasks.filter(t => t.status === 'completed');
-        const taskCompletion = tasks.length > 0 ? (completedTasks.length / tasks.length) * 100 : 0;
+        const semesterCourses = courses.filter(c => c.semester === currentSemester);
+        const semesterCourseIds = semesterCourses.map(c => c.id);
 
-        // Mock focus consistency based on sessions
-        const focusConsistency = Math.min(100, focusSessions.length * 20);
+        const semesterTasks = tasks.filter(t => semesterCourseIds.includes(t.courseId));
+        const completedTasks = semesterTasks.filter(t => t.status === 'completed');
+        const taskCompletion = semesterTasks.length > 0 ? (completedTasks.length / semesterTasks.length) * 100 : 100;
 
-        // Grade performance based on grades
-        const totalPossible = grades.reduce((sum, g) => sum + g.total, 0);
-        const totalScored = grades.reduce((sum, g) => sum + g.scored, 0);
-        const gradePerformance = totalPossible > 0 ? (totalScored / totalPossible) * 100 : 0;
+        // Mock focus consistency based on sessions for semester tasks
+        const semesterSessions = focusSessions.filter(s => {
+            const task = tasks.find(t => t.id === s.taskId);
+            return task && semesterCourseIds.includes(task.courseId);
+        });
+        const focusConsistency = Math.min(100, semesterSessions.length * 20);
 
-        // Attendance performance
-        const avgAttendance = attendance.length > 0
-            ? attendance.reduce((sum, a) => sum + (a.attended / a.total), 0) / attendance.length * 100
+        // Grade performance based on grades for current semester
+        const semesterGrades = grades.filter(g => semesterCourseIds.includes(g.courseId));
+        const totalPossible = semesterGrades.reduce((sum, g) => sum + g.total, 0);
+        const totalScored = semesterGrades.reduce((sum, g) => sum + g.scored, 0);
+        const gradePerformance = totalPossible > 0 ? (totalScored / totalPossible) * 100 : 100;
+
+        // Attendance performance for current semester
+        const semesterAttendance = attendance.filter(a => semesterCourseIds.includes(a.courseId));
+        const avgAttendance = semesterAttendance.length > 0
+            ? semesterAttendance.reduce((sum, a) => sum + (a.attended / a.total), 0) / semesterAttendance.length * 100
             : 100;
 
         return {
@@ -257,9 +267,10 @@ export const AcademicProvider = ({ children }) => {
     };
 
     const getWeakSubjectInsight = () => {
-        if (courses.length === 0) return null;
+        const semesterCourses = courses.filter(c => c.semester === currentSemester);
+        if (semesterCourses.length === 0) return null;
 
-        const coursePerformance = courses.map(course => {
+        const coursePerformance = semesterCourses.map(course => {
             const courseGrades = grades.filter(g => g.courseId === course.id);
             const totalPossible = courseGrades.reduce((sum, g) => sum + g.total, 0);
             const totalScored = courseGrades.reduce((sum, g) => sum + g.scored, 0);
@@ -303,8 +314,22 @@ export const AcademicProvider = ({ children }) => {
     };
 
     const getWeeklyReflection = () => {
-        const completedThisWeek = tasks.filter(t => t.status === 'completed').length;
-        const focusHours = focusSessions.reduce((sum, s) => sum + s.duration, 0) / 60;
+        const semesterCourses = courses.filter(c => c.semester === currentSemester);
+        const semesterCourseIds = semesterCourses.map(c => c.id);
+
+        const completedThisWeek = tasks.filter(t =>
+            t.status === 'completed' &&
+            semesterCourseIds.includes(t.courseId)
+        ).length;
+
+        const focusHours = focusSessions.reduce((sum, s) => {
+            const task = tasks.find(t => t.id === s.taskId);
+            if (task && semesterCourseIds.includes(task.courseId)) {
+                return sum + s.duration;
+            }
+            return sum;
+        }, 0) / 60;
+
         const weakSubject = getWeakSubjectInsight();
 
         return {

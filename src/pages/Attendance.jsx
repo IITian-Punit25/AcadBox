@@ -4,7 +4,7 @@ import { FaCheckCircle, FaExclamationTriangle, FaTimesCircle, FaChartLine, FaPlu
 import './Attendance.css';
 
 const Attendance = () => {
-    const { courses, currentSemester, getSemesterCourses, attendance, updateAttendance, getAttendanceStatus, getAttendanceInsights } = useAcademic();
+    const { courses, semesters, currentSemester, setCurrentSemester, getSemesterCourses, attendance, updateAttendance, getAttendanceStatus, getAttendanceInsights } = useAcademic();
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [tempAttendance, setTempAttendance] = useState({ attended: 0, total: 0 });
@@ -31,7 +31,15 @@ const Attendance = () => {
                     <p className="v5-subtitle">Monitor class presence and predictive risk levels</p>
                 </div>
                 <div className="v5-header-actions">
-                    <span className="v5-semester-badge">{currentSemester}</span>
+                    <select
+                        className="v5-semester-select"
+                        value={currentSemester}
+                        onChange={(e) => setCurrentSemester(e.target.value)}
+                    >
+                        {semesters.map(sem => (
+                            <option key={sem} value={sem}>{sem}</option>
+                        ))}
+                    </select>
                 </div>
             </header>
 

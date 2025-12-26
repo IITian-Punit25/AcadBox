@@ -233,3 +233,25 @@
         grid-template-columns: 1fr;
     }
 }
+
+.v5-semester-select {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.v5-semester-select:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.v5-semester-select option {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
