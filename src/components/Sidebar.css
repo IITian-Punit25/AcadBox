@@ -130,6 +130,20 @@
     padding-right: 8px;
 }
 
+.v5-empty-modal-state {
+    text-align: center;
+    padding: 32px 16px;
+    background: var(--bg-tertiary);
+    border-radius: 16px;
+    border: 1px dashed var(--border-color);
+}
+
+.v5-empty-modal-state p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
 .v5-semester-item {
     display: flex;
     justify-content: space-between;

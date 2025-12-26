@@ -132,38 +132,44 @@ const Sidebar = ({ isOpen, onClose }) => {
                             <button className="v5-close-btn" onClick={() => setShowSemesterManager(false)}>&times;</button>
                         </div>
                         <div className="v5-semester-list">
-                            {semesters.map(sem => (
-                                <div key={sem} className="v5-semester-item">
-                                    {editingSemester === sem ? (
-                                        <div className="v5-edit-semester-row">
-                                            <input
-                                                type="text"
-                                                className="v5-input"
-                                                value={tempSemesterName}
-                                                onChange={(e) => setTempSemesterName(e.target.value)}
-                                                autoFocus
-                                            />
-                                            <button className="v5-btn-primary v5-btn-sm" onClick={() => handleUpdateSemester(sem)}>Save</button>
-                                            <button className="v5-btn-ghost v5-btn-sm" onClick={() => setEditingSemester(null)}>Cancel</button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <span className="v5-semester-name">{sem}</span>
-                                            <div className="v5-semester-actions">
-                                                <button className="v5-action-btn" onClick={() => {
-                                                    setEditingSemester(sem);
-                                                    setTempSemesterName(sem);
-                                                }} title="Rename">
-                                                    <FaEdit />
-                                                </button>
-                                                <button className="v5-action-btn delete" onClick={() => handleDeleteSemester(sem)} title="Delete">
-                                                    <FaTrash />
-                                                </button>
+                            {semesters.length > 0 ? (
+                                semesters.map(sem => (
+                                    <div key={sem} className="v5-semester-item">
+                                        {editingSemester === sem ? (
+                                            <div className="v5-edit-semester-row">
+                                                <input
+                                                    type="text"
+                                                    className="v5-input"
+                                                    value={tempSemesterName}
+                                                    onChange={(e) => setTempSemesterName(e.target.value)}
+                                                    autoFocus
+                                                />
+                                                <button className="v5-btn-primary v5-btn-sm" onClick={() => handleUpdateSemester(sem)}>Save</button>
+                                                <button className="v5-btn-ghost v5-btn-sm" onClick={() => setEditingSemester(null)}>Cancel</button>
                                             </div>
-                                        </>
-                                    )}
+                                        ) : (
+                                            <>
+                                                <span className="v5-semester-name">{sem}</span>
+                                                <div className="v5-semester-actions">
+                                                    <button className="v5-action-btn" onClick={() => {
+                                                        setEditingSemester(sem);
+                                                        setTempSemesterName(sem);
+                                                    }} title="Rename">
+                                                        <FaEdit />
+                                                    </button>
+                                                    <button className="v5-action-btn delete" onClick={() => handleDeleteSemester(sem)} title="Delete">
+                                                        <FaTrash />
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="v5-empty-modal-state">
+                                    <p>Please add your first semester or session to get started.</p>
                                 </div>
-                            ))}
+                            )}
                         </div>
                         <div className="v5-modal-footer">
                             <button className="v5-btn-secondary" onClick={() => {
