@@ -63,9 +63,13 @@ const Sidebar = ({ isOpen, onClose }) => {
                     value={currentSemester}
                     onChange={(e) => setCurrentSemester(e.target.value)}
                 >
-                    {semesters.map(sem => (
-                        <option key={sem} value={sem}>{sem}</option>
-                    ))}
+                    {semesters.length > 0 ? (
+                        semesters.map(sem => (
+                            <option key={sem} value={sem}>{sem}</option>
+                        ))
+                    ) : (
+                        <option value="">No Semesters</option>
+                    )}
                 </select>
             </div>
 
