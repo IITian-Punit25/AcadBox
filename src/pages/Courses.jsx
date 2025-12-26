@@ -26,15 +26,6 @@ const Courses = () => {
                     <span className="semester-badge">{currentSemester}</span>
                 </div>
                 <div className="header-right">
-                    <select
-                        className="input-field semester-select-small"
-                        value={currentSemester}
-                        onChange={(e) => setCurrentSemester(e.target.value)}
-                    >
-                        {semesters.map(sem => (
-                            <option key={sem} value={sem}>{sem}</option>
-                        ))}
-                    </select>
                     <button className="btn btn-primary" onClick={() => setIsAdding(!isAdding)}>
                         <FaPlus /> {isAdding ? 'Cancel' : 'Add Course'}
                     </button>

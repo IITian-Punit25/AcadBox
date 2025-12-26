@@ -31,15 +31,7 @@ const Attendance = () => {
                     <p className="v5-subtitle">Monitor class presence and predictive risk levels</p>
                 </div>
                 <div className="v5-header-actions">
-                    <select
-                        className="v5-semester-select"
-                        value={currentSemester}
-                        onChange={(e) => setCurrentSemester(e.target.value)}
-                    >
-                        {semesters.map(sem => (
-                            <option key={sem} value={sem}>{sem}</option>
-                        ))}
-                    </select>
+                    <span className="v5-semester-badge">{currentSemester}</span>
                 </div>
             </header>
 
