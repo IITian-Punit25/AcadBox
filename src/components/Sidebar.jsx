@@ -5,7 +5,7 @@ import { useAcademic } from '../context/AcademicContext';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose }) => {
-    const { semesters, currentSemester, setCurrentSemester, addSemester, updateSemester, deleteSemester } = useAcademic();
+    const { semesters, currentSemester, setCurrentSemester, addSemester, updateSemester, deleteSemester, deleteAllSemesters } = useAcademic();
     const location = useLocation();
 
     const [showSemesterModal, setShowSemesterModal] = React.useState(false);
@@ -32,7 +32,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
 
     const handleDeleteSemester = (semesterName) => {
-        if (semesters.length > 1 && window.confirm(`Delete ${semesterName} and all its courses?`)) {
+        if (window.confirm(`Delete ${semesterName} and all its courses?`)) {
             deleteSemester(semesterName);
         }
     };

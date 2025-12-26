@@ -135,13 +135,22 @@ export const AcademicProvider = ({ children }) => {
     };
 
     const deleteSemester = (semesterName) => {
-        if (semesters.length > 1) {
-            setSemesters(prev => prev.filter(s => s !== semesterName));
-            setCourses(prev => prev.filter(c => c.semester !== semesterName));
-            if (currentSemester === semesterName) {
-                setCurrentSemester(semesters.find(s => s !== semesterName));
-            }
+        const updatedSemesters = semesters.filter(s => s !== semesterName);
+        setSemesters(updatedSemesters);
+        setCourses(prev => prev.filter(c => c.semester !== semesterName));
+        if (currentSemester === semesterName) {
+            setCurrentSemester(updatedSemesters.length > 0 ? updatedSemesters[0] : '');
         }
+    };
+
+    const deleteAllSemesters = () => {
+        setSemesters(['Semester 1']);
+        setCourses([]);
+        setTasks([]);
+        setGrades([]);
+        setAttendance([]);
+        setFocusSessions([]);
+        setCurrentSemester('Semester 1');
     };
 
     const updateAttendance = (courseId, attended, total) => {
@@ -361,7 +370,7 @@ export const AcademicProvider = ({ children }) => {
             courses, tasks, schedule, settings, grades, semesters, currentSemester, focusSessions, attendance,
             addTask, completeTask, addCourse, deleteCourse, updateSettings,
             addGrade, deleteGrade, updateGrade, getCourseGrades, addSemester, getSemesterCourses, setCurrentSemester,
-            setCourses, setSemesters, updateSemester, deleteSemester, addFocusSession,
+            setCourses, setSemesters, updateSemester, deleteSemester, deleteAllSemesters, addFocusSession,
             getPriorityExplanation, getAcademicHealthBreakdown, getWeakSubjectInsight,
             getEffortAccuracyInsight, getWeeklyReflection, getConfidenceIndicator,
             updateAttendance, getAttendanceStatus, getAttendanceInsights
