@@ -116,21 +116,45 @@
 }
 
 @media (max-width: 768px) {
+    .courses-page .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .header-left,
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
     .course-form {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .course-form button {
+        width: 100%;
+        margin-top: 8px;
     }
 
     .courses-grid {
         grid-template-columns: 1fr;
     }
 
+    .course-card {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
     .header-right {
-        width: 100%;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
     .semester-select-small {
-        flex: 1;
-        min-width: 150px;
+        width: 100%;
     }
 }

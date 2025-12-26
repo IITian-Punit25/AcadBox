@@ -163,10 +163,67 @@
     .focus-page {
         flex-direction: column;
         height: auto;
+        gap: 20px;
     }
 
+    .timer-container {
+        width: 100%;
+        padding: 30px 20px;
+        box-sizing: border-box;
+    }
+
+    .task-selector {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 768px) {
     .timer-display {
-        font-size: 5rem;
+        font-size: 4.5rem;
+        margin-bottom: 30px;
+    }
+
+    .timer-modes {
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 15px;
+    }
+
+    .mode-btn {
+        padding: 6px 14px;
+        font-size: 0.9rem;
+    }
+
+    .timer-controls {
+        gap: 15px;
+    }
+
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .control-btn.main {
+        width: 70px;
+        height: 70px;
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .timer-display {
+        font-size: 3.5rem;
+    }
+
+    .timer-modes {
+        gap: 5px;
+    }
+
+    .mode-btn {
+        padding: 4px 10px;
+        font-size: 0.8rem;
     }
 }
 

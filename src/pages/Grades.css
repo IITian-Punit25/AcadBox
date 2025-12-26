@@ -622,20 +622,86 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 24px;
+        padding-bottom: 20px;
     }
 
     .v5-header-actions {
         width: 100%;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .v5-select-wrapper {
+        width: 100%;
     }
 
     .v5-btn-primary,
     .v5-btn-secondary {
-        flex: 1;
+        width: 100%;
+    }
+
+    .v5-stats-section {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .v5-stat-card {
+        padding: 20px;
+    }
+
+    .v5-stat-value {
+        font-size: 2rem;
+    }
+
+    .v5-courses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .v5-form-card {
+        padding: 20px;
+    }
+
+    .v5-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .v5-form-actions {
+        flex-direction: column;
+    }
+
+    .v5-form-actions button {
+        width: 100%;
     }
 
     .v5-modal-content {
         margin: 16px;
-        padding: 24px;
+        padding: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .v5-modal-footer {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .v5-modal-footer button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .v5-header-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .v5-course-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .v5-course-grade {
+        align-items: flex-start;
     }
 }

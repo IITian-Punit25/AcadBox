@@ -13,11 +13,69 @@
   box-sizing: border-box;
 }
 
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 20px;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 900;
+}
+
+.mobile-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.mobile-toggle {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 950;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
+    width: 100%;
     padding: 20px;
     padding-top: 80px;
-    /* Space for mobile header if needed */
+  }
+
+  .mobile-header {
+    display: flex;
   }
 }
