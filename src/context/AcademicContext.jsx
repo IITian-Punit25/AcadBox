@@ -1,7 +1,8 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
 
 const AcademicContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAcademic = () => useContext(AcademicContext);
 
 export const AcademicProvider = ({ children }) => {
@@ -34,7 +35,6 @@ export const AcademicProvider = ({ children }) => {
         ];
     });
 
-    const [schedule, setSchedule] = useState([]);
 
     const [settings, setSettings] = useState(() => {
         const saved = localStorage.getItem('acadbox_settings');
@@ -66,6 +66,16 @@ export const AcademicProvider = ({ children }) => {
     const [focusSessions, setFocusSessions] = useState(() => {
         const saved = localStorage.getItem('acadbox_focusSessions');
         return saved ? JSON.parse(saved) : [];
+    });
+
+    const [activeSession, setActiveSession] = useState(() => {
+        const saved = localStorage.getItem('acadbox_activeSession');
+        return saved ? JSON.parse(saved) : null;
+    });
+
+    const [streak, setStreak] = useState(() => {
+        const saved = localStorage.getItem('acadbox_streak');
+        return saved ? JSON.parse(saved) : { current: 0, history: [], status: 'solid', lastLogDate: null };
     });
 
     // Save to LocalStorage
@@ -101,6 +111,24 @@ export const AcademicProvider = ({ children }) => {
         localStorage.setItem('acadbox_settings', JSON.stringify(settings));
     }, [settings]);
 
+    useEffect(() => {
+        if (activeSession) {
+            localStorage.setItem('acadbox_activeSession', JSON.stringify(activeSession));
+        } else {
+            localStorage.removeItem('acadbox_activeSession');
+        }
+    }, [activeSession]);
+
+    useEffect(() => {
+        localStorage.setItem('acadbox_streak', JSON.stringify(streak));
+    }, [streak]);
+
+    const getPerformanceColor = (percentage) => {
+        if (percentage >= 80) return 'var(--accent-green)';
+        if (percentage >= 60) return '#f59e0b';
+        return 'var(--accent-red)';
+    };
+
     // "AI" Prioritization Logic
     const calculatePriority = (task) => {
         const today = new Date();
@@ -114,23 +142,17 @@ export const AcademicProvider = ({ children }) => {
         return urgencyScore * typeWeight + effortPenalty;
     };
 
-    const generateSchedule = () => {
+    const schedule = useMemo(() => {
         const pendingTasks = tasks.filter(t => t.status === 'pending');
         const prioritized = pendingTasks
             .map(task => ({ ...task, priority: calculatePriority(task) }))
             .sort((a, b) => b.priority - a.priority);
 
-        const newSchedule = prioritized.map(task => ({
+        return prioritized.map(task => ({
             ...task,
             scheduledFor: task.priority > 5 ? 'Today' : 'Tomorrow',
             duration: task.effort // hours
         }));
-
-        setSchedule(newSchedule);
-    };
-
-    useEffect(() => {
-        generateSchedule();
     }, [tasks]);
 
     // Apply theme to document
@@ -281,6 +303,79 @@ export const AcademicProvider = ({ children }) => {
         setFocusSessions(prev => [...prev, { ...session, id: Date.now(), timestamp: new Date().toISOString() }]);
     };
 
+    const startSession = (taskId, duration, sessionGoal = '') => {
+        setActiveSession({
+            taskId,
+            startTime: Date.now(),
+            duration: duration * 60, // seconds
+            status: 'active',
+            isLocked: true,
+            sessionGoal
+        });
+    };
+
+    const breakSession = (reason) => {
+        if (activeSession) {
+            setActiveSession(prev => ({ ...prev, status: 'broken', breakReason: reason, endTime: Date.now() }));
+        }
+    };
+
+    const endSession = (actualDuration, taskStatus) => {
+        if (!activeSession) return;
+
+        const sessionData = {
+            taskId: activeSession.taskId,
+            duration: actualDuration, // minutes
+            status: activeSession.status === 'broken' ? 'broken' : 'completed',
+            timestamp: new Date().toISOString(),
+            taskStatus
+        };
+
+        addFocusSession(sessionData);
+        setActiveSession(null);
+        updateStreak(sessionData);
+    };
+
+    const updateStreak = (lastSession) => {
+        const today = new Date().toISOString().split('T')[0];
+
+        // If already logged today, don't double count, but maybe repair crack?
+        // For now, simple logic:
+        if (streak.lastLogDate === today) return;
+
+        // Check criteria: At least one session completed AND output threshold (simplified here as task completion)
+        if (lastSession.status === 'completed' && lastSession.taskStatus === 'completed') {
+            setStreak(prev => ({
+                current: prev.current + 1,
+                history: [...prev.history, { date: today, status: 'solid' }],
+                status: 'solid',
+                lastLogDate: today
+            }));
+        }
+    };
+
+    // Check for missed days on load
+    useEffect(() => {
+        const checkStreakDecay = () => {
+            const today = new Date().toISOString().split('T')[0];
+            const lastLog = streak.lastLogDate;
+
+            if (lastLog && lastLog !== today) {
+                const diffTime = Math.abs(new Date(today) - new Date(lastLog));
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays > 1) {
+                    // Missed a day or more
+                    setStreak(prev => ({
+                        ...prev,
+                        status: 'cracked'
+                    }));
+                }
+            }
+        };
+        checkStreakDecay();
+    }, [streak.lastLogDate]);
+
     const getPriorityExplanation = (taskId) => {
         const task = tasks.find(t => t.id === taskId);
         if (!task) return "";
@@ -334,24 +429,6 @@ export const AcademicProvider = ({ children }) => {
         };
     };
 
-    const autoRescheduleTasks = () => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        setTasks(prev => prev.map(task => {
-            const deadline = new Date(task.deadline);
-            if (task.status === 'pending' && deadline < today) {
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                return {
-                    ...task,
-                    deadline: tomorrow.toISOString().split('T')[0],
-                    rescheduled: true
-                };
-            }
-            return task;
-        }));
-    };
 
     const getWeakSubjectInsight = () => {
         const semesterCourses = courses.filter(c => c.semester === currentSemester);
@@ -440,6 +517,24 @@ export const AcademicProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        const autoRescheduleTasks = () => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            setTasks(prev => prev.map(task => {
+                const deadline = new Date(task.deadline);
+                if (task.status === 'pending' && deadline < today) {
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    return {
+                        ...task,
+                        deadline: tomorrow.toISOString().split('T')[0],
+                        rescheduled: true
+                    };
+                }
+                return task;
+            }));
+        };
         autoRescheduleTasks();
     }, []);
 
@@ -451,7 +546,8 @@ export const AcademicProvider = ({ children }) => {
             setCourses, setSemesters, updateSemester, deleteSemester, deleteAllSemesters, addFocusSession,
             getPriorityExplanation, getAcademicHealthBreakdown, getWeakSubjectInsight,
             getEffortAccuracyInsight, getWeeklyReflection, getConfidenceIndicator,
-            updateAttendance, getAttendanceStatus, getAttendanceInsights
+            updateAttendance, getAttendanceStatus, getAttendanceInsights, getPerformanceColor,
+            activeSession, startSession, breakSession, endSession, streak
         }}>
             {children}
         </AcademicContext.Provider>

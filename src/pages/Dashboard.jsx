@@ -1,17 +1,37 @@
 import React from 'react';
 import { useAcademic } from '../context/AcademicContext';
 import TaskInput from '../components/TaskInput';
-import { FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaLightbulb, FaHistory } from 'react-icons/fa';
+import { FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaLightbulb, FaHistory, FaFire } from 'react-icons/fa';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import './Dashboard.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const StreakWidget = ({ streak }) => {
+    const isCracked = streak.status === 'cracked';
+
+    return (
+        <div className={`card streak-card ${isCracked ? 'cracked' : ''}`}>
+            <div className="streak-header">
+                <div className="streak-icon-wrapper">
+                    <FaFire className={`streak-icon ${isCracked ? 'cracked-icon' : ''}`} />
+                </div>
+                <div className="streak-info">
+                    <h3>{streak.current} Day Streak</h3>
+                    <p>{isCracked ? "Momentum broken. Resume today to prevent decay." : "Consistency is key. Keep it up."}</p>
+                </div>
+            </div>
+            {isCracked && <div className="crack-overlay"></div>}
+        </div>
+    );
+};
+
 const Dashboard = () => {
     const {
         tasks, courses, completeTask,
-        getAcademicHealthBreakdown, getPriorityExplanation, getWeeklyReflection
+        getAcademicHealthBreakdown, getPriorityExplanation, getWeeklyReflection,
+        streak
     } = useAcademic();
 
     const pendingTasks = tasks.filter(t => t.status === 'pending');
@@ -49,6 +69,9 @@ const Dashboard = () => {
             </header>
 
             <div className="dashboard-grid">
+                {/* Streak Widget */}
+                <StreakWidget streak={streak} />
+
                 {/* Health Card */}
                 <div className="card health-card">
                     <div className="card-header-with-info">

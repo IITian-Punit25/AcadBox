@@ -1,31 +1,119 @@
+.dashboard {
+    padding-bottom: 80px;
+}
+
 .page-header {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
 .page-header h1 {
     font-size: 2rem;
-    margin-bottom: 5px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
 }
 
 .date-display {
     color: var(--text-secondary);
+    font-size: 1.1rem;
 }
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
 }
 
+.card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Streak Card */
+.streak-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.streak-card.cracked {
+    border-color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.streak-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.streak-icon {
+    font-size: 2rem;
+    color: #f59e0b;
+}
+
+.streak-icon.cracked-icon {
+    color: var(--accent-red);
+}
+
+.streak-info h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.streak-info p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 4px 0 0;
+}
+
+.crack-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 L30 30 M50 10 L40 40 M80 10 L60 30' stroke='rgba(239, 68, 68, 0.2)' stroke-width='2'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Health Card */
 .health-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+}
+
+.card-header-with-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    position: relative;
 }
 
 .chart-container {
     position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 20px auto;
+    width: 180px;
+    height: 180px;
+    margin-bottom: 24px;
 }
 
 .health-score {
@@ -33,52 +121,112 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
 }
 
 .health-status {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+}
+
+.health-breakdown-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.info-icon {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.health-breakdown-tooltip:hover .info-icon {
+    color: var(--primary-color);
+}
+
+.tooltip-content {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 12px;
+    width: 200px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    z-index: 10;
+    margin-top: 8px;
+}
+
+.health-breakdown-tooltip:hover .tooltip-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tooltip-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+}
+
+.tooltip-item span:last-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Priority Card */
+.priority-card h3 {
+    margin-bottom: 20px;
 }
 
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
+    gap: 16px;
 }
 
 .task-item {
+    background: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    background-color: var(--bg-tertiary);
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-blue);
+    transition: background 0.2s;
 }
 
-.task-info h4 {
-    margin: 5px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
+.task-item:hover {
+    background: var(--bg-primary);
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
 }
 
 .task-course {
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 150px;
+    letter-spacing: 0.5px;
+}
+
+.task-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
 }
 
 .task-meta {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
@@ -89,122 +237,84 @@
     font-size: 1.5rem;
     cursor: pointer;
     transition: color 0.2s;
+    padding: 4px;
 }
 
 .btn-check:hover {
     color: var(--accent-green);
 }
 
-.card-header-with-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-
-.health-breakdown-tooltip,
 .ai-explanation-tooltip {
     position: relative;
-    display: inline-block;
-}
-
-.info-icon {
-    color: var(--text-secondary);
-    cursor: help;
-    font-size: 1.1rem;
+    cursor: pointer;
 }
 
 .info-icon-small {
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    cursor: help;
-    font-size: 0.9rem;
+    opacity: 0.7;
 }
 
-.tooltip-content,
 .tooltip-content-wide {
-    visibility: hidden;
     position: absolute;
-    z-index: 10;
-    bottom: 125%;
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary);
-    text-align: left;
-    padding: 12px;
-    border-radius: 8px;
+    background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    width: 200px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 0.85rem;
-}
-
-.tooltip-content-wide {
+    padding: 12px;
+    border-radius: 12px;
     width: 250px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    z-index: 10;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    text-align: center;
 }
 
-.health-breakdown-tooltip:hover .tooltip-content,
 .ai-explanation-tooltip:hover .tooltip-content-wide {
-    visibility: visible;
     opacity: 1;
+    visibility: visible;
 }
 
-.tooltip-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-
-.tooltip-item:last-child {
-    margin-bottom: 0;
-}
-
-.task-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.reflection-card {
-    grid-column: 1 / -1;
-}
-
+/* Reflection Card */
 .reflection-card .card-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
 .header-icon {
-    color: var(--accent-blue);
-}
-
-.reflection-content {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 30px;
+    font-size: 1.5rem;
+    color: var(--primary-color);
 }
 
 .reflection-stats {
-    display: flex;
-    gap: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
 .stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: 16px;
+    text-align: center;
 }
 
 .stat-value {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--accent-blue);
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
 }
 
 .stat-label {
@@ -213,67 +323,31 @@
 }
 
 .reflection-insight {
-    flex: 1;
     display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background-color: var(--bg-tertiary);
-    border-radius: 12px;
-    border-left: 4px solid var(--accent-purple);
+    gap: 12px;
+    background: rgba(59, 130, 246, 0.05);
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(59, 130, 246, 0.1);
 }
 
 .insight-icon {
-    color: var(--accent-purple);
-    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
 }
 
-@media (max-width: 1024px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
+.reflection-insight p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
 }
 
-@media (max-width: 768px) {
-    .page-header h1 {
-        font-size: 1.75rem;
-    }
-
-    .reflection-content {
-        flex-direction: column;
-        gap: 30px;
-        text-align: center;
-    }
-
-    .reflection-stats {
-        width: 100%;
-        justify-content: space-around;
-        gap: 20px;
-    }
-
-    .reflection-insight {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .task-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .btn-check {
-        align-self: flex-end;
-    }
-}
-
-@media (max-width: 480px) {
-    .reflection-stats {
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    .stat-value {
-        font-size: 1.5rem;
-    }
+.empty-state {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 20px;
+    font-style: italic;
 }

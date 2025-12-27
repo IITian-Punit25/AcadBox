@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useAcademic } from '../context/AcademicContext';
-import { FaTrash, FaPlus, FaTrophy, FaChevronDown, FaChevronUp, FaEdit, FaLightbulb } from 'react-icons/fa';
+import { FaTrash, FaPlus, FaTrophy, FaEdit, FaLightbulb } from 'react-icons/fa';
 import './Grades.css';
 
 const Grades = () => {
     const {
-        courses, grades, addGrade, deleteGrade, updateGrade, getCourseGrades,
-        semesters, currentSemester, setCurrentSemester, getSemesterCourses,
-        addSemester, updateSemester, deleteSemester,
+        courses, addGrade, deleteGrade, updateGrade, getCourseGrades,
+        currentSemester, getSemesterCourses,
         getWeakSubjectInsight, getConfidenceIndicator
     } = useAcademic();
     const [isAdding, setIsAdding] = useState(false);
@@ -29,7 +28,7 @@ const Grades = () => {
         if (coursesInSem.length > 0 && (!selectedCourseForAdd || !coursesInSem.find(c => c.id === selectedCourseForAdd))) {
             setSelectedCourseForAdd(coursesInSem[0].id);
         }
-    }, [currentSemester, getSemesterCourses]);
+    }, [currentSemester, getSemesterCourses, selectedCourseForAdd]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -108,11 +107,6 @@ const Grades = () => {
         return { totalScored, totalPossible, percentage, calibratedScore, totalWeightage, byType, grades: courseGrades };
     };
 
-    const getPerformanceColor = (percentage) => {
-        if (percentage >= 80) return 'var(--accent-green)';
-        if (percentage >= 60) return '#f59e0b';
-        return 'var(--accent-red)';
-    };
 
     const calculateSemesterSPI = (semester) => {
         let totalCredits = 0;

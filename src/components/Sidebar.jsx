@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaBook, FaCalendarAlt, FaChartBar, FaChartLine, FaClock, FaCog, FaTimes, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaHome, FaBook, FaCalendarAlt, FaChartBar, FaChartLine, FaClock, FaCog, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
 import { useAcademic } from '../context/AcademicContext';
 import logo from '../assets/logo.png';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose }) => {
-    const { semesters, currentSemester, setCurrentSemester, addSemester, updateSemester, deleteSemester, deleteAllSemesters } = useAcademic();
+    const { semesters, currentSemester, setCurrentSemester, addSemester, updateSemester, deleteSemester } = useAcademic();
     const location = useLocation();
 
     const [showSemesterModal, setShowSemesterModal] = React.useState(false);

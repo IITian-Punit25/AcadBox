@@ -4,7 +4,7 @@ import { FaTrash, FaPlus, FaGraduationCap } from 'react-icons/fa';
 import './Courses.css';
 
 const Courses = () => {
-    const { courses, addCourse, deleteCourse, semesters, currentSemester, setCurrentSemester, getSemesterCourses } = useAcademic();
+    const { addCourse, deleteCourse, currentSemester, getSemesterCourses } = useAcademic();
     const [isAdding, setIsAdding] = useState(false);
     const [newCourse, setNewCourse] = useState({ name: '', credits: 3, color: '#3b82f6' });
 

@@ -4,7 +4,7 @@ import { FaCheckCircle, FaExclamationTriangle, FaTimesCircle, FaChartLine, FaPlu
 import './Attendance.css';
 
 const Attendance = () => {
-    const { courses, semesters, currentSemester, setCurrentSemester, getSemesterCourses, attendance, updateAttendance, getAttendanceStatus, getAttendanceInsights } = useAcademic();
+    const { currentSemester, getSemesterCourses, attendance, updateAttendance, getAttendanceStatus, getAttendanceInsights } = useAcademic();
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [tempAttendance, setTempAttendance] = useState({ attended: 0, total: 0 });
